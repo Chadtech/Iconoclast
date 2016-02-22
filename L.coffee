@@ -57,12 +57,8 @@ _.forEach keys, (k) ->
 
     harmonics = [
       { a: 0.5,    freq: freq        }
-      { a: 0.1667, freq: freq * 2    }
-      { a: 0.0533, freq: freq * 3.01 }
-      { a: 0.0138, freq: freq * 4.02 }
-      { a: 0.0089, freq: freq * 5.04 }
-      { a: 0.0025,  freq: freq * 7.1  }
-      { a: 0.0005, freq: freq * 8.2  }
+      { a: 0.0625, freq: freq * 2.01 }
+      { a: 0.0157, freq: freq * 4.04 }
     ]
 
     harmonics = _.map harmonics, (h) ->

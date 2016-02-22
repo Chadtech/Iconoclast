@@ -25,6 +25,7 @@ makeTimings = require './make-timings'
 makeTimes   = require './make-times'
 
 m           = require './m'
+l           = require './l'
 
 project =
   name:       'm-cartel'
@@ -47,18 +48,20 @@ build = (from, to) ->
   timings = makeTimings project
   times   = makeTimes timings
 
-ye   = m['37'] 44100
+ye   = m['37'] 176400
 ye   = eff.vol ye, factor: 0.25
-dank = m['41'] 44100
+dank = m['41'] 176400
 dank = eff.vol dank, factor: 0.25
 ye   = Nt.mix ye, dank
-dope = m['45'] 44100
+dope = m['45'] 176400
 dope = eff.vol dope, factor: 0.25
 ye   = Nt.mix ye, dope
 # console.log 'YE IS', ye
 ye = Nt.convertTo64Bit ye
 
 Nt.buildFile 'testtt.wav', [ye]
-console.log 'Done!'
+
+cp.exec 'play testtt.wav' 
+# console.log 'Done!'
 # addListener 'data', (d) ->
 #   d = d.toString().trim().split ' '
