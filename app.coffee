@@ -5,6 +5,10 @@ eff   = Nt.effect
 
 {addListener} = process.openStdin()
 
+zero = (a) -> 
+  _.map a, (b) ->
+    _.map b, (t) -> 
+      t - b[0] + 100
 
 # Utilities
 {
@@ -23,9 +27,13 @@ getScore    = require './get-score'
 # getVoices   = require './get-voices'
 makeTimings = require './make-timings'
 makeTimes   = require './make-times'
+makeLines   = require './make-lines'
+channels    = require './channels'
 
 m           = require './m'
 l           = require './l'
+
+
 
 project =
   name:       'm-cartel'
@@ -35,33 +43,91 @@ project =
     {name: 'part0.csv', length: 80}
   ]
   lines:      []
-  beatLength: 2756
-  # v:          getVoices
+  # beatLength: 2756
+  beatLength:   11100
+  voices:     [ 
+    m(), m(), m(), m(),
+    l(), l(), l(), l() 
+  ]
+
+timings       = makeTimings project
+project.times = makeTimes timings
+
+getLines = (project, length) ->
+  {voices} = project
+  vLength  = voices.length
+  lines    = [ 0 .. vLength - 1 ]
+  _.map lines, (line) ->
+    o = []
+    _.times length, ->
+      o.push 0
+    o
+
+build           = (from, to) ->
+  { times }     = project
+  { voices }    = project 
+  {beatLength}  = project
+  score         = getScore project
+  project.score = _.map score, 
+    (part) -> part.slice from, to
+  times   = times.slice from, to
+
+  times   = zero times
+  length  = times[0][ to - 1 ] 
+  length += 200
+
+  lines   = []
+  _.times voices.length, (i) ->
+    lines.push []
+    _.times length, -> 
+      lines[i].push 0
+
+  project.lines = lines
+  project.times = times
+  lines         = makeLines project
+  lines         = _.map lines, 
+    (l) ->  eff.vol l, factor: 0.1
+  lines         = _.reduce lines, 
+    (sum, l) -> Nt.mix sum, l, 0
+
+  channels lines
+
+  # console.log 'Here at least'
+  # output = Nt.convertTo64Bit lines
+  # console.log 'Then here'
+  # Nt.buildFile 'testtttt.wav', [output]
+  # console.log 'Done!!'
+
+  # play 'testtttt.wav'
 
 
 
-build = (from, to) ->
-  score = getScore project
-  score = _.map score, (part) ->
-    part.slice from, to
 
-  timings = makeTimings project
-  times   = makeTimes timings
 
-ye   = m['37'] 176400
-ye   = eff.vol ye, factor: 0.25
-dank = m['41'] 176400
-dank = eff.vol dank, factor: 0.25
-ye   = Nt.mix ye, dank
-dope = m['45'] 176400
-dope = eff.vol dope, factor: 0.25
-ye   = Nt.mix ye, dope
-# console.log 'YE IS', ye
-ye = Nt.convertTo64Bit ye
+  # # console.log 'from to', from, to
+  # lines   = getLines project, to - from
 
-Nt.buildFile 'testtt.wav', [ye]
 
-cp.exec 'play testtt.wav' 
+
+
+build 0, 60
+
+
+
+# ye   = m['37'] 176400
+# ye   = eff.vol ye, factor: 0.25
+# dank = m['41'] 176400
+# dank = eff.vol dank, factor: 0.25
+# ye   = Nt.mix ye, dank
+# dope = m['45'] 176400
+# dope = eff.vol dope, factor: 0.25
+# ye   = Nt.mix ye, dope
+# # console.log 'YE IS', ye
+# ye = Nt.convertTo64Bit ye
+
+# Nt.buildFile 'testtt.wav', [ye]
+
+# cp.exec 'play testtt.wav' 
 # console.log 'Done!'
 # addListener 'data', (d) ->
 #   d = d.toString().trim().split ' '

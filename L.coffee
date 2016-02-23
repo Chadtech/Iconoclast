@@ -4,6 +4,8 @@ gen   = Nt.generate
 eff   = Nt.effect
 cp    = require 'child_process'
 
+{random, PI} = Math
+
 tonic = 20
 tones = [
   1       # 1/1   
@@ -18,59 +20,64 @@ tones = [
 
 inharmonicity = 1.01
 
-octaves = [ 0 .. 8 ]
-octaves = _.map octaves, (octave) ->
-  _.map tones, (tone, ti) ->
+module.exports = ->
+  octaves = [ 0 .. 8 ]
+  octaves = _.map octaves, (octave) ->
+    _.map tones, (tone, ti) ->
 
-    # just a bit of variance
-    # away from the act tone
-    r  = Math.random() - 0.5
-    r /= 150
-    r++
+      # just a bit of variance
+      # away from the act tone
+      r  = random() - 0.5
+      r /= 150
+      r++
 
-    # The tendency for higher
-    # frequencies to 'stretch'
-    # higher
-    h  = octave * tones.length
-    h += ti
-    h  = h // tones.length
-    h  = inharmonicity ** h
+      # The tendency for higher
+      # frequencies to 'stretch'
+      # higher
+      h  = octave * tones.length
+      h += ti
+      h  = h // tones.length
+      h  = inharmonicity ** h
 
-    # The tone, in this octave
-    o  = tonic * (2 ** octave)
-    o *= tone
+      # The tone, in this octave
+      o  = tonic * (2 ** octave)
+      o *= tone
 
-    o * h * r
+      o * h * r
 
-octaves = _.reduce octaves,
-  (sum, octave, oi) ->
-    _.forEach octave, (tone, ti) ->
-      key      = oi + '' + ti
-      sum[key] = tone
-    sum
-  {}
+  octaves = _.reduce octaves,
+    (sum, octave, oi) ->
+      _.forEach octave, (tone, ti) ->
+        key      = oi + '' + ti
+        sum[key] = tone
+      sum
+    {}
 
-keys = _.keys octaves
-_.forEach keys, (k) ->
-  freq       = octaves[k]
-  octaves[k] = (length) ->
+  keys = _.keys octaves
+  _.reduce keys, 
+    (sum, k) =>
+      freq   = octaves[k]
+      sum[k] = (length) ->
 
-    harmonics = [
-      { a: 0.5,    freq: freq        }
-      { a: 0.0625, freq: freq * 2.01 }
-      { a: 0.0157, freq: freq * 4.04 }
-    ]
+        harmonics = [
+          { a: 0.5,    freq: freq        }
+          { a: 0.0625, freq: freq * 2.01 }
+          { a: 0.0157, freq: freq * 4.04 }
+        ]
 
-    harmonics = _.map harmonics, (h) ->
-      gen.sine
-        amplitude: h.a
-        tone:      h.freq
-        sustain:   length
-
-    _.reduce harmonics, 
-      (sum, h) -> Nt.mix sum, h
-      gen.silence sustain: length 
+        harmonics = _.map harmonics, (h) ->
+          gen.sine
+            amplitude: h.a
+            tone:      h.freq
+            sustain:   length
+            phase:     random() * PI
 
 
-module.exports = octaves
+        _.reduce harmonics, 
+          (sum, h) -> Nt.mix sum, h
+          gen.silence sustain: length 
+
+      sum
+    {}
+
 
