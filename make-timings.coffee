@@ -19,8 +19,10 @@ module.exports = MakeTimings = (p) ->
   timings = [ 0 .. v - 1 ]
   _.map timings, ->
     _.map base, (t) ->
-      o  = random()
-      o *= variance
-      o -= variance / 2
-      o += t
-      o // 1
+      # o  = random()
+      # o *= variance
+      # o -= variance / 2
+      # o += t
+      # o // 1
+
+      t

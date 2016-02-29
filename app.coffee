@@ -70,48 +70,42 @@ build           = (from, to) ->
   score         = getScore project
   project.score = _.map score, 
     (part) -> part.slice from, to
-  times   = times.slice from, to
 
+  times   = times.slice from, to
   times   = zero times
   length  = times[0][ to - 1 ] 
   length += 200
 
-  lines   = []
-  _.times voices.length, (i) ->
-    lines.push []
-    _.times length, -> 
-      lines[i].push 0
+  vl      = voices.length
+  lines   = _.times vl, -> 
+    _.times length, -> 0
 
   project.lines = lines
   project.times = times
   lines         = makeLines project
-  lines         = _.map lines, 
-    (l) ->  eff.vol l, factor: 0.1
-  lines         = _.reduce lines, 
-    (sum, l) -> Nt.mix sum, l, 0
+  # say lines.length
+  # lines         = lines.slice 0, 2
 
-  channels lines
+  # lines         = [lines[1]]
 
-  # console.log 'Here at least'
-  # output = Nt.convertTo64Bit lines
-  # console.log 'Then here'
-  # Nt.buildFile 'testtttt.wav', [output]
-  # console.log 'Done!!'
+  # channels      = lines
+  # Nt.buildFile 'Test-line.wav', 
+  #   [ Nt.convertTo64Bit lines[0] ]
 
-  # play 'testtttt.wav'
+  channels = channels lines
+  channels = _.map channels, (ch) ->
+    Nt.convertTo64Bit ch
 
-
-
-
-
-  # # console.log 'from to', from, to
-  # lines   = getLines project, to - from
+  { name } = project
+  name    += '.wav'
+  Nt.buildFile name, channels
+  console.log 'DONE!!!!!'
 
 
 
 
 build 0, 60
-
+say 'DONE'
 
 
 # ye   = m['37'] 176400

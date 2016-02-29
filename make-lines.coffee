@@ -2,13 +2,11 @@ _     = require 'lodash'
 Nt    = require './noitech/noitech'
 gen   = Nt.generate
 eff   = Nt.effect
-
-say           = require './util/say'
-
-ramp = 60
+say   = require './util/say'
+ramp  = 120
 
 
-module.exports = (project) ->
+module.exports      = (project) ->
   { voices, score } = project
   {  times, lines } = project
   { beatLength }    = project
@@ -18,7 +16,9 @@ module.exports = (project) ->
     v = voices[i]
 
     _.forEach s, (n, ni) -> 
-      t = times[i][ni]
+      t    = times[i][ ni ]
+      t_   = times[i][ ni + 1 ]
+
       isQ  = n[0] is 'Q'
       unless n[0] is ''
         unless v[n[0]]? or isQ
@@ -31,6 +31,11 @@ module.exports = (project) ->
           seg      = l.slice r, t
           seg      = eff.fadeOut seg
           silence  = seg.concat silence
+
+          silence  = eff.fadeOut silence,
+           (beginAt: 0, endAt: ramp)
+          silence = eff.fadeOut silence
+
           l = Nt.displace silence, l, r
 
           unless isQ
@@ -42,6 +47,7 @@ module.exports = (project) ->
             if isNaN volume.factor
               say 'volume isnt number'
               console.log i, ni, volume
+            
             if volume > 1 or 0 > volume
               say 'volume isnt possible'
               console.log i, ni, volume
@@ -56,8 +62,15 @@ module.exports = (project) ->
             n = eff.vol n, volume
             _.times fade, ->
               n = eff.fadeOut n
-            n = eff.rampOut n
-            n = eff.rampIn n
 
-            l = Nt.mix n, l, t
+            n = eff.fadeIn n, endAt: ramp
+            n = eff.fadeOut n, beginAt: n.length - ramp
+
+            _.forEach n, (s, si) ->
+              l[ t + si ] += s
+
+
     l
+
+
+
