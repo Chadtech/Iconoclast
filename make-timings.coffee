@@ -1,28 +1,24 @@
 _          = require 'lodash'
 { random } = Math
 
-variance = 100
+variance = 300
 
 module.exports = MakeTimings = (p) ->
   { parts, beatLength } = p
   { voices }            = p
   length = _.reduce parts, 
-    (sum, p) -> 
-      sum + p.length
+    (sum, p) -> sum + p.length
     0
 
-  base = [ 0 ]
-  _.times length, ->
-    base.push beatLength
+  base = _.times length, 
+    -> beatLength
+  base.unshift 0
 
-  v = voices.length
-  timings = [ 0 .. v - 1 ]
-  _.map timings, ->
+  vl = voices.length
+  _.times vl, ->
     _.map base, (t) ->
-      # o  = random()
-      # o *= variance
-      # o -= variance / 2
-      # o += t
-      # o // 1
-
-      t
+      o  = random()
+      o *= variance
+      o -= variance / 2
+      o += t
+      o // 1

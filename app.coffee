@@ -3,7 +3,7 @@ Nt    = require './noitech/noitech'
 gen   = Nt.generate
 eff   = Nt.effect
 
-{addListener} = process.openStdin()
+stdin = process.openStdin()
 
 zero = (a) -> 
   _.map a, (b) ->
@@ -28,7 +28,7 @@ getScore    = require './get-score'
 makeTimings = require './make-timings'
 makeTimes   = require './make-times'
 makeLines   = require './make-lines'
-channels    = require './channels'
+channeler   = require './channels'
 
 m           = require './m'
 l           = require './l'
@@ -39,31 +39,23 @@ project =
   name:       'm-cartel'
   root:       './score'
   parts: [
-    {name: 'part0.csv', length: 80}
-    {name: 'part0.csv', length: 80}
+    { name: 'part0.csv', length: 128 }
+    { name: 'part0.csv', length: 128 }
   ]
   lines:      []
-  # beatLength: 2756
-  beatLength:   11100
+  beatLength: 5002
   voices:     [ 
-    m(), m(), m(), m(),
-    l(), l(), l(), l() 
+    m(), m(), l(), l(), l() 
   ]
 
 timings       = makeTimings project
 project.times = makeTimes timings
 
-getLines = (project, length) ->
-  {voices} = project
-  vLength  = voices.length
-  lines    = [ 0 .. vLength - 1 ]
-  _.map lines, (line) ->
-    o = []
-    _.times length, ->
-      o.push 0
-    o
 
-build           = (from, to) ->
+build = (from, to) ->
+  say 'building'
+
+  from          = 0 unless from?
   { times }     = project
   { voices }    = project 
   {beatLength}  = project
@@ -73,6 +65,7 @@ build           = (from, to) ->
 
   times   = times.slice from, to
   times   = zero times
+  to      = times[0].length unless to?
   length  = times[0][ to - 1 ] 
   length += 200
 
@@ -80,48 +73,53 @@ build           = (from, to) ->
   lines   = _.times vl, -> 
     _.times length, -> 0
 
-  project.lines = lines
-  project.times = times
-  lines         = makeLines project
-  # say lines.length
-  # lines         = lines.slice 0, 2
+  _.extend project, {lines}
+  _.extend project, {times}
+  lines    = makeLines project
 
-  # lines         = [lines[1]]
-
-  # channels      = lines
-  # Nt.buildFile 'Test-line.wav', 
-  #   [ Nt.convertTo64Bit lines[0] ]
-
-  channels = channels lines
+  channels = channeler lines
   channels = _.map channels, (ch) ->
     Nt.convertTo64Bit ch
 
+  say 'compiling'
   { name } = project
   name    += '.wav'
   Nt.buildFile name, channels
-  console.log 'DONE!!!!!'
+
+  timings       = makeTimings project
+  project.times = makeTimes timings
+
+
+say 'ready'
+console.log project.name + ' terminal:'
+stdin.addListener 'data', (d) ->
+  d = d.toString().trim().split ' '
+
+  switch d[0]
+
+    when 'build'
+
+      if d[1]?
+        build d[1], d[2]
+      else
+        build()
+
+      console.log '*************************'
+
+    when 'play'
+
+      if d[1]?
+        say 'playing', =>
+          play d[1] + '.wav'  
+      else
+        say 'playing', =>
+          play project.name + '.wav'
 
 
 
 
-build 0, 60
-say 'DONE'
 
 
-# ye   = m['37'] 176400
-# ye   = eff.vol ye, factor: 0.25
-# dank = m['41'] 176400
-# dank = eff.vol dank, factor: 0.25
-# ye   = Nt.mix ye, dank
-# dope = m['45'] 176400
-# dope = eff.vol dope, factor: 0.25
-# ye   = Nt.mix ye, dope
-# # console.log 'YE IS', ye
-# ye = Nt.convertTo64Bit ye
 
-# Nt.buildFile 'testtt.wav', [ye]
 
-# cp.exec 'play testtt.wav' 
-# console.log 'Done!'
-# addListener 'data', (d) ->
-#   d = d.toString().trim().split ' '
+

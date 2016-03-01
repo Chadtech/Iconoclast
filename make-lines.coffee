@@ -15,6 +15,7 @@ module.exports      = (project) ->
     s = score[i]
     v = voices[i]
 
+
     _.forEach s, (n, ni) -> 
       t    = times[i][ ni ]
       t_   = times[i][ ni + 1 ]
@@ -39,6 +40,7 @@ module.exports      = (project) ->
           l = Nt.displace silence, l, r
 
           unless isQ
+
             volume = parseInt n[2], 16
             volume++
             volume = volume // 16
@@ -64,11 +66,12 @@ module.exports      = (project) ->
               n = eff.fadeOut n
 
             n = eff.fadeIn n, endAt: ramp
-            n = eff.fadeOut n, beginAt: n.length - ramp
+            n = eff.fadeOut n, 
+              beginAt: n.length - ramp
 
             _.forEach n, (s, si) ->
+              # console.log s
               l[ t + si ] += s
-
 
     l
 

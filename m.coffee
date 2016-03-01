@@ -21,8 +21,7 @@ tones = [
 inharmonicity = 1.01
 
 module.exports = ->
-  octaves = [ 0 .. 8 ]
-  octaves = _.map octaves, (octave) ->
+  octaves = _.times 8, (octave) ->
     _.map tones, (tone, ti) ->
 
       # just a bit of variance
