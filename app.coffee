@@ -90,12 +90,51 @@ build = (from, to) ->
   project.times = makeTimes timings
 
 
+buildLines = ->
+  say 'building'
+
+  { times }     = project
+  { voices }    = project 
+  {beatLength}  = project
+  score         = getScore project
+  project.score = score
+
+  times   = zero times
+  l       = times[0].length
+  length  = times[0][ l - 1 ] 
+  length += 200
+
+  _.times voices.length, (li) ->
+    dummy       = _.cloneDeep project
+    dummy.lines = [ _.times length, -> 0 ]
+    dummy.score = dummy.score.slice li, li + 1
+    dummy.times = dummy.times.slice li, li + 1
+
+    lines = makeLines dummy
+    line  = lines[0]
+    line  = Nt.convertTo64Bit line
+    fn    = dummy.name + '-line' 
+    fn   += li + '.wav'
+    console.log 'LINE ', li 
+    Nt.buildFile fn, [ line ]
+
+  timings       = makeTimings project
+  project.times = makeTimes timings
+
+
+
+
+
 say 'ready'
 console.log project.name + ' terminal:'
 stdin.addListener 'data', (d) ->
   d = d.toString().trim().split ' '
 
   switch d[0]
+
+    when 'finish'
+
+      buildLines()
 
     when 'build'
 

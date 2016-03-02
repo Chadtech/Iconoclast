@@ -52,11 +52,12 @@ module.exports = ->
       sum
     {}
 
-  keys = _.keys octaves
-  _.reduce keys, 
+  _.reduce (_.keys octaves), 
     (sum, k) =>
       freq   = octaves[k]
       sum[k] = (length) ->
+
+        phase = random() * PI
 
         harmonics = [
           { a: 0.5,    freq: freq        }
@@ -64,17 +65,18 @@ module.exports = ->
           { a: 0.0157, freq: freq * 4.04 }
         ]
 
-        harmonics = _.map harmonics, (h) ->
-          gen.sine
-            amplitude: h.a
-            tone:      h.freq
-            sustain:   length
-            phase:     random() * PI
+        harmonics = _.map harmonics, 
+          (h) ->
+            gen.sine
+              amplitude: h.a
+              tone:      h.freq
+              sustain:   length
+              phase:     phase
 
 
         _.reduce harmonics, 
           (sum, h) -> Nt.mix sum, h
-          gen.silence sustain: length 
+          (_.times length, -> 0)
 
       sum
     {}

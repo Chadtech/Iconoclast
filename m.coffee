@@ -8,14 +8,14 @@ cp    = require 'child_process'
 
 tonic = 20
 tones = [
-  1       # 1/1   
-  1.111   # 10/9
-  1.25    # 5/4
-  1.333   # 4/3
-  1.481   # 40/27
-  1.667   # 5/3
-  1.778   # 16/9
-  1.875   # 15/8
+  1       # 1/1    C
+  1.111   # 10/9   D
+  1.25    # 5/4    E
+  1.333   # 4/3    F
+  1.481   # 40/27  G
+  1.667   # 5/3    A
+  1.778   # 16/9  
+  1.875   # 15/8   B
 ]
 
 inharmonicity = 1.01
@@ -52,11 +52,12 @@ module.exports = ->
       sum
     {}
 
-  keys = _.keys octaves
-  _.reduce keys, 
+  _.reduce (_.keys octaves), 
     (sum, k) =>
       freq   = octaves[k]
       sum[k] = (length) ->
+
+        phase = random() * PI
 
         harmonics = [
           { a: 0.5,    freq: freq        }
@@ -68,16 +69,17 @@ module.exports = ->
           { a: 0.0005, freq: freq * 8.2  }
         ]
 
-        harmonics = _.map harmonics, (h) ->
-          gen.sine
-            amplitude: h.a
-            tone:      h.freq
-            sustain:   length
-            phase:     random() * PI
+        harmonics = _.map harmonics, 
+          (h) ->
+            gen.sine
+              amplitude: h.a
+              tone:      h.freq
+              sustain:   length
+              phase:     phase
 
         _.reduce harmonics, 
           (sum, h) -> Nt.mix sum, h
-          gen.silence sustain: length 
+          (_.times length, -> 0)
 
       sum
     {}
