@@ -24,7 +24,6 @@ fs            = require 'fs'
 
 # Processes
 getScore    = require './get-score'
-# getVoices   = require './get-voices'
 makeTimings = require './make-timings'
 makeTimes   = require './make-times'
 makeLines   = require './make-lines'
@@ -39,8 +38,17 @@ project =
   name:       'm-cartel'
   root:       './score'
   parts: [
-    { name: 'part0.csv', length: 128 }
-    { name: 'part0.csv', length: 128 }
+    { name: 'part0.csv', length: 16  }
+    { name: 'part1.csv', length: 128 }
+    { name: 'part2.csv', length: 128 }
+    { name: 'part3.csv', length: 128 }
+    { name: 'part2.csv', length: 128 }
+    { name: 'part4.csv', length: 16  }
+    { name: 'part5.csv', length: 128 }
+    { name: 'part6.csv', length: 128 }
+    { name: 'part7.csv', length: 16  }
+    { name: 'part8.csv', length: 128 }
+
   ]
   lines:      []
   beatLength: 5002
@@ -63,7 +71,9 @@ build = (from, to) ->
   project.score = _.map score, 
     (part) -> part.slice from, to
 
-  times   = times.slice from, to
+  times   = _.map times, (t)->
+    t.slice from, to
+
   times   = zero times
   to      = times[0].length unless to?
   length  = times[0][ to - 1 ] 
@@ -139,7 +149,10 @@ stdin.addListener 'data', (d) ->
     when 'build'
 
       if d[1]?
-        build d[1], d[2]
+        if d[2]?
+          build d[1], d[2]
+        else
+          build d[1]
       else
         build()
 

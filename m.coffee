@@ -8,14 +8,15 @@ cp    = require 'child_process'
 
 tonic = 20
 tones = [
-  1       # 1/1    C
-  1.111   # 10/9   D
-  1.25    # 5/4    E
-  1.333   # 4/3    F
-  1.481   # 40/27  G
-  1.667   # 5/3    A
-  1.778   # 16/9  
-  1.875   # 15/8   B
+  1       # 1/1    
+  1.111   # 10/9   
+  1.25    # 5/4    
+  1.333   # 4/3    
+  1.481   # 40/27  
+  1.667   # 5/3      
+  1.875   # 15/8   
+  1.875   # 15/8   
+
 ]
 
 inharmonicity = 1.01
@@ -60,13 +61,14 @@ module.exports = ->
         phase = random() * PI
 
         harmonics = [
-          { a: 0.5,    freq: freq        }
-          { a: 0.1667, freq: freq * 2    }
+          { a: 0.35,   freq: freq / 2    }
+          { a: 0.15,   freq: freq        }
+          { a: 0.08,   freq: freq * 2    }
           { a: 0.0533, freq: freq * 3.01 }
-          { a: 0.0138, freq: freq * 4.02 }
-          { a: 0.0089, freq: freq * 5.04 }
-          { a: 0.0025, freq: freq * 7.1  }
-          { a: 0.0005, freq: freq * 8.2  }
+          { a: 0.0338, freq: freq * 4.02 }
+          { a: 0.0289, freq: freq * 5.04 }
+          { a: 0.0225, freq: freq * 7.1  }
+          { a: 0.01,   freq: freq * 8.2  }
         ]
 
         harmonics = _.map harmonics, 

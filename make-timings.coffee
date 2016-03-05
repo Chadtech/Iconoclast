@@ -1,7 +1,7 @@
 _          = require 'lodash'
 { random } = Math
 
-variance = 300
+variance = 100
 
 module.exports = MakeTimings = (p) ->
   { parts, beatLength } = p

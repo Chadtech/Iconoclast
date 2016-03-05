@@ -70,9 +70,7 @@ module.exports      = (project) ->
               beginAt: n.length - ramp
 
             _.forEach n, (s, si) ->
-              # console.log s
               l[ t + si ] += s
-
     l
 
 

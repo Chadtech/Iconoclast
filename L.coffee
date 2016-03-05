@@ -16,6 +16,8 @@ tones = [
   1.667   # 5/3
   1.778   # 16/9
   1.875   # 15/8
+  1.875   # 15/8
+
 ]
 
 inharmonicity = 1.01
@@ -60,9 +62,9 @@ module.exports = ->
         phase = random() * PI
 
         harmonics = [
-          { a: 0.5,    freq: freq        }
-          { a: 0.0625, freq: freq * 2.01 }
-          { a: 0.0157, freq: freq * 4.04 }
+          { a: 0.4,    freq: freq        }
+          { a: 0.0925, freq: freq * 2.01 }
+          { a: 0.0757, freq: freq * 4.04 }
         ]
 
         harmonics = _.map harmonics, 
