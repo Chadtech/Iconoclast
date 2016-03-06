@@ -31,6 +31,7 @@ channeler   = require './channels'
 
 m           = require './m'
 l           = require './l'
+p           = require './p'
 
 
 
@@ -53,7 +54,7 @@ project =
   lines:      []
   beatLength: 5002
   voices:     [ 
-    m(), m(), l(), l(), l() 
+    m(), m(), l(), l(), p(), p()
   ]
 
 timings       = makeTimings project

@@ -1,7 +1,5 @@
 _     = require 'lodash'
 Nt    = require './noitech/noitech'
-gen   = Nt.generate
-eff   = Nt.effect
 {max} = Math
 
 perc  = './perc/'
@@ -54,7 +52,7 @@ hat = ->
         sum[i] += s
 
       (sum.concat r).slice 30
-      
+
     _.times longest, -> 0
 
 
