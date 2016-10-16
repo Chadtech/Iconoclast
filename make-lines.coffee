@@ -43,7 +43,7 @@ module.exports      = (project) ->
 
             volume = parseInt n[2], 16
             volume++
-            volume = volume // 16
+            volume = volume / 16
             volume = factor: volume
 
             if isNaN volume.factor
@@ -62,8 +62,24 @@ module.exports      = (project) ->
             
             n = v[n[0]] duration
             n = eff.vol n, volume
-            _.times fade, ->
+
+            if fade is 1
               n = eff.fadeOut n
+
+            if fade is 2
+              n = eff.fadeIn n
+
+            if fade is 3
+              n = eff.fadeOut n
+              n = eff.fadeIn n
+
+            if fade is 4
+              n = eff.fadeIn n, endAt: 4000
+
+            if fade > 4
+              n = eff.fadeOut n
+              n = eff.fadeIn n, endAt: ((fade - 4) * 2000)
+
 
             n = eff.fadeIn n, endAt: ramp
             n = eff.fadeOut n, 

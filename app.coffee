@@ -32,29 +32,31 @@ channeler   = require './channels'
 m           = require './m'
 l           = require './l'
 p           = require './p'
+n           = require './n'
+q           = require './q'
 
 
 
 project =
-  name:       'm-cartel'
+  name:       'vol0p4'
   root:       './score'
   parts: [
-    { name: 'part0.csv', length: 16  }
-    { name: 'part1.csv', length: 128 }
-    { name: 'part2.csv', length: 128 }
-    { name: 'part3.csv', length: 128 }
-    { name: 'part2.csv', length: 128 }
-    { name: 'part4.csv', length: 16  }
-    { name: 'part5.csv', length: 128 }
-    { name: 'part6.csv', length: 128 }
-    { name: 'part7.csv', length: 16  }
-    { name: 'part8.csv', length: 128 }
-
+    { name: 'part-9.csv',  length: 16  }
+    { name: 'part-a.csv',  length: 192 }
+    { name: 'part-ab.csv', length: 96  }
+    { name: 'part-b.csv',  length: 192 }
+    { name: 'part-bc.csv', length: 128 }
+    { name: 'part-c.csv',  length: 256 }
+    { name: 'part-d.csv',  length: 128 }
+    { name: 'part-e.csv', length: 32  }
+    { name: 'part-f.csv', length: 96 }
+    { name: 'part-ab.csv', length: 96  }
+    { name: 'part-g.csv',  length: 193 }
   ]
   lines:      []
-  beatLength: 5002
+  beatLength: 4000
   voices:     [ 
-    m(), m(), l(), l(), p(), p()
+    p, p, n(), q(), q(), l(), l(), l()
   ]
 
 timings       = makeTimings project
@@ -72,14 +74,17 @@ build = (from, to) ->
   project.score = _.map score, 
     (part) -> part.slice from, to
 
+  console.log "score"
   times   = _.map times, (t)->
     t.slice from, to
 
+  console.log "times"
   times   = zero times
   to      = times[0].length unless to?
   length  = times[0][ to - 1 ] 
   length += 200
 
+  console.log "lines"
   vl      = voices.length
   lines   = _.times vl, -> 
     _.times length, -> 0
@@ -88,8 +93,10 @@ build = (from, to) ->
   _.extend project, {times}
   lines    = makeLines project
 
+  console.log "channels"
   channels = channeler lines
   channels = _.map channels, (ch) ->
+    ch = eff.vol ch, factor: 4
     Nt.convertTo64Bit ch
 
   say 'compiling'
@@ -116,18 +123,27 @@ buildLines = ->
   length += 200
 
   _.times voices.length, (li) ->
-    dummy       = _.cloneDeep project
-    dummy.lines = [ _.times length, -> 0 ]
-    dummy.score = dummy.score.slice li, li + 1
-    dummy.times = dummy.times.slice li, li + 1
+    dummy        = _.cloneDeep project
+    dummy.lines  = [ _.times length, -> 0 ]
+    dummy.score  = dummy.score.slice li, li + 1
+    dummy.times  = dummy.times.slice li, li + 1
+    dummy.voices = [ voices[li] ]
 
     lines = makeLines dummy
-    line  = lines[0]
-    line  = Nt.convertTo64Bit line
+
+    channels = channeler lines, li, project.voices.length
+    channels = _.map channels, (ch) ->
+      ch = eff.vol ch, factor: 4
+      Nt.convertTo64Bit ch
+
+    # line  = lines[0]
+    # line  = Nt.convertTo64Bit line
     fn    = dummy.name + '-line' 
     fn   += li + '.wav'
     console.log 'LINE ', li 
-    Nt.buildFile fn, [ line ]
+    Nt.buildFile fn, channels
+
+  say "finished"
 
   timings       = makeTimings project
   project.times = makeTimes timings

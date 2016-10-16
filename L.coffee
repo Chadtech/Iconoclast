@@ -6,18 +6,15 @@ cp    = require 'child_process'
 
 {random, PI} = Math
 
+# Reed organy sound
+
 tonic = 20
 tones = [
-  1       # 1/1   
-  1.111   # 10/9
-  1.25    # 5/4
+  1       # 1/1
+  1.167   # 7/6
   1.333   # 4/3
-  1.481   # 40/27
-  1.667   # 5/3
-  1.778   # 16/9
-  1.875   # 15/8
-  1.875   # 15/8
-
+  1.524   # 32/21
+  1.75    # 7/4
 ]
 
 inharmonicity = 1.01
@@ -62,9 +59,10 @@ module.exports = ->
         phase = random() * PI
 
         harmonics = [
-          { a: 0.4,    freq: freq        }
-          { a: 0.0925, freq: freq * 2.01 }
-          { a: 0.0757, freq: freq * 4.04 }
+          { a: 0.1,    freq: freq / 3.9 }
+          { a: 0.15,   freq: freq       }
+          { a: 0.0525, freq: freq * 3.1 }
+          { a: 0.0357, freq: freq * 5.2 }
         ]
 
         harmonics = _.map harmonics, 

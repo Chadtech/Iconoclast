@@ -15,7 +15,7 @@ preShift = (l, delay) ->
     l = pad.concat l
   l
 
-module.exports = (lines) ->
+module.exports = (lines, pos, ensembleSize) ->
 
   longest = _.reduce lines, 
     (m, l) -> max m, l.length
@@ -26,15 +26,18 @@ module.exports = (lines) ->
     _.times longest, -> 0
 
   positions = [
-    [ -4, 2 ]
     [ -3, 4 ]
     [  1, 5 ]
-    [  2, 3 ]
     [ -2, 3 ]
+    [  2, 3 ]
+    [ -2, 5 ]
     [ -1, 5 ]
-    [  4, 2 ]
     [  3, 4 ]
+    [  0, 1 ]
   ]
+
+  if pos?
+    positons = [ positions[pos] ]
 
   levels = _.map positions, (p) ->
     d  = abs p[0]
@@ -56,6 +59,9 @@ module.exports = (lines) ->
   
   lines = _.map lines, (l) ->
     _l = 1 / lines.length
+    console.log "ensembleSize_", ensembleSize
+    if ensembleSize?
+      _l = 1 / ensembleSize
     eff.vol l, factor: _l
 
   _.map channels, (ch, i) ->

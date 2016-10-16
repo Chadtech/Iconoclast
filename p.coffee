@@ -1,15 +1,11 @@
 _                = require 'lodash'
 Nt               = require './noitech/noitech'
+gen   = Nt.generate
+eff   = Nt.effect
 {convertToFloat} = Nt
 {max}            = Math
 
 perc  = './perc/'
-
-hats  = _.times 5, (i) ->
-  fn  = perc + 'decHat_'
-  fn += i + '.wav'
-  f   = (Nt.open fn)[0]
-  _.map f, (s) -> s * 0.1
 
 getSamples = (name, amount, vol) ->
   samples  = _.times amount, 
@@ -27,7 +23,7 @@ getSamples = (name, amount, vol) ->
   _.map samples, (s) ->
     pad = longest - s.length
     pad = _.times pad, -> 0
-    h.concat pad
+    s.concat pad
 
 
 combiners =
@@ -45,7 +41,7 @@ combiners =
       (s) -> s * vol 
     c
 
-generator  = (samples, var) ->
+generator  = (samples, offset) ->
   (duration) ->
     {length} = samples
 
@@ -62,7 +58,7 @@ generator  = (samples, var) ->
 
     output = _.reduce ss,
       (sum, _ss) ->
-        offset    = _.random var
+        offset    = _.random offset
         offset    = _.times 0, -> 0
         _ss       = offset.concat _ss
         {length}  = sum
@@ -74,17 +70,73 @@ generator  = (samples, var) ->
 
         (sum.concat remainder).slice 30
 
-      _.times longest, -> 0
+      _.times samples[0].length, -> 0
 
     output.slice 0, duration
 
 
+bassDrum = (tone_, dur) ->
+  ->
+    f = gen.sine
+      amplitude: 0.1
+      tone: tone_
+      sustain: dur
+    f = eff.fadeOut f
+
+    si = gen.sine
+      amplitude: 0.05
+      tone: tone_ * 6
+      sustain: dur
+    si = eff.fadeOut f
+
+    se = gen.sine
+      amplitude: 0.05
+      tone: tone_ * 7
+      sustain: dur
+    se = eff.fadeOut f
+
+    s = gen.sine
+      tone: (_.random tone_ / 2, tone_)
+      sustain: 7105
+      amplitude: 0.5
+    s = eff.fadeOut s
+
+    t = gen.sine
+      tone: (_.random tone_ / 2, tone_ * 0.8)
+      sustain: 3105
+      amplitude: 0.1
+    t = eff.fadeOut t
+
+    fo = gen.sine
+      tone: (_.random tone_ * 2, tone_ * 1.6)
+      sustain: 5105
+      amplitude: 0.4
+    fo = eff.fadeOut t
+
+    fi = gen.sine
+      tone: (_.random tone_ * 2, tone_ * 4)
+      sustain: dur / 2
+      amplitude: 0.4
+    fi = eff.fadeOut t
+
+    _.forEach [s, t, fo, fi, si, se], (h) ->
+      _.forEach h, (_s, i) ->
+        f[i] += h[i]
+        0
+
+    f
+
+
 percussion = 
-  'hc': generator (getSamples 'hat_',       5, 0.1), 10
-  'ho': generator (getSamples 'hat-open_',  4, 0.1), 10
-  'sn': generator (getSamples 'snare',      4, 0.1), 10
-  'sl': generator (getSamples 'snare-lite', 4, 0.1), 10
-  'cl': generator (getSamples 'click',      5, 0.1), 10    
+  'hc': generator (getSamples 'hat_',        5, 0.35), 10
+  'ho': generator (getSamples 'hat-open_',   4, 0.35), 10
+  'sn': generator (getSamples 'snare_',      4, 0.6),  10
+  'sl': generator (getSamples 'snare-lite_', 4, 0.6),  10
+  'cl': generator (getSamples 'click_',      4, 0.5),  10 
+  'bd': bassDrum(140, 14210)
+  'lb': bassDrum(70,  24820)
+  # 'bd': bassDrum(280, 14210)
+  # 'lb': bassDrum(140,  24820)
 
 module.exports = percussion
 
