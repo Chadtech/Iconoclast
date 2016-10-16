@@ -1,0 +1,23 @@
+{
+  "name": "iconoclast",
+  "version": "1.0.0",
+  "description": "This is Iconoclast, my music production code. Iconoclast reads musical scores stored as csv files, and then assembles them into wav files. It relies on a lot of different technology that Ive worked on, and the subtle arrangement of how these different pieces work together would be hard to describe here. This repo itself it very messy! Let me describe some of the files here.",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chadtech/bellicose-bells-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chadtech/bellicose-bells-template/issues"
+  },
+  "homepage": "https://github.com/Chadtech/bellicose-bells-template"
+}
