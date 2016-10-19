@@ -2,7 +2,6 @@ _     = require 'lodash'
 Nt    = require './noitech/noitech'
 gen   = Nt.generate
 eff   = Nt.effect
-cp    = require 'child_process'
 
 {random, PI} = Math
 

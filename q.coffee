@@ -2,7 +2,6 @@ _     = require 'lodash'
 Nt    = require './noitech/noitech'
 gen   = Nt.generate
 eff   = Nt.effect
-cp    = require 'child_process'
 
 {random, PI} = Math
 
@@ -27,7 +26,7 @@ module.exports = ->
       # just a bit of variance
       # away from the act tone
       r  = random() - 0.5
-      r /= 150
+      r /= 100
       r++
 
       # The tendency for higher
@@ -79,7 +78,7 @@ module.exports = ->
               sustain:   h.dur
               phase:     h.phase
 
-            _.times 2, ->
+            _.times 1, ->
               o = eff.fadeOut o 
               0
             pad = _.times d - o.length, -> 0

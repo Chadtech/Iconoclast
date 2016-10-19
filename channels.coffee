@@ -26,14 +26,13 @@ module.exports = (lines, pos, ensembleSize) ->
     _.times longest, -> 0
 
   positions = [
-    [ -3, 4 ]
-    [  1, 5 ]
-    [ -2, 3 ]
-    [  2, 3 ]
-    [ -2, 5 ]
-    [ -1, 5 ]
-    [  3, 4 ]
-    [  0, 1 ]
+    [ -5, 5 ]
+    [  5, 5 ]
+    [  0, 8 ]
+    [ -3, 3 ]
+    [  3, 5 ]
+    [ -1, 2 ]
+    [  1, 2 ]
   ]
 
   if pos?
@@ -59,7 +58,6 @@ module.exports = (lines, pos, ensembleSize) ->
   
   lines = _.map lines, (l) ->
     _l = 1 / lines.length
-    console.log "ensembleSize_", ensembleSize
     if ensembleSize?
       _l = 1 / ensembleSize
     eff.vol l, factor: _l

@@ -41,22 +41,16 @@ project =
   name:       'vol0p5'
   root:       './score'
   parts: [
-    { name: 'part-9.csv',  length: 16  }
-    { name: 'part-a.csv',  length: 192 }
-    { name: 'part-ab.csv', length: 96  }
-    { name: 'part-b.csv',  length: 192 }
-    { name: 'part-bc.csv', length: 128 }
-    { name: 'part-c.csv',  length: 256 }
-    { name: 'part-d.csv',  length: 128 }
-    { name: 'part-e.csv', length: 32  }
-    { name: 'part-f.csv', length: 96 }
-    { name: 'part-ab.csv', length: 96  }
-    { name: 'part-g.csv',  length: 193 }
+    { name: 'part-b.csv',  length: 16 }
+    { name: 'part-c.csv',  length: 128 }
+    # { name : 'part-d.csv', length: 60 }
+    { name: 'part-c.csv',  length: 160 }
+
   ]
   lines:      []
-  beatLength: 4000
+  beatLength: 6250
   voices:     [ 
-    p, p, n(), q(), q(), l(), l(), l()
+    p, p, n(), q(), q(), q(), q()
   ]
 
 timings       = makeTimings project
