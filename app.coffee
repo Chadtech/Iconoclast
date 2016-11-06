@@ -35,23 +35,38 @@ p           = require './p'
 n           = require './n'
 q           = require './q'
 
+bellsG      = require './bells-G'
+bellsH      = require './bells-H'
 
 
 project =
-  name:       'vol0p5'
+  name:       'vol0p6'
   root:       './score'
   parts: [
-    { name: 'part-b.csv', length: 16  }
-    { name: 'part-c.csv', length: 128 }
-    { name: 'part-e.csv', length: 128 }
-    { name: 'part-h.csv', length: 128 }
-    { name: 'part-l.csv', length: 128 }
+    { name: 'part0.csv', length: 72 }
+    { name: 'part1.csv', length: 64 }
+    { name: 'part2.csv', length: 64 }
+    { name: 'part3.csv', length: 64 }
+    { name: 'part4.csv', length: 64 }
+    { name: 'part5.csv', length: 64 }
+    { name: 'part6.csv', length: 64 }
+    { name: 'part7.csv', length: 64 }
+    { name: 'part8.csv', length: 64 }
   ]
   lines:      []
-  beatLength: 6250
+  beatLength: 11100
   # beatLength: 12500
   voices:     [ 
-    p, p, n(), q(), q(), q(), q()
+    bellsG(), 
+    bellsG(), 
+    bellsG(), 
+    bellsG(),
+    bellsH(),
+    bellsH(),
+    bellsH(),
+    bellsH()
+    p,
+    p
   ]
 
 timings       = makeTimings project

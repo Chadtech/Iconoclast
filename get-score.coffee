@@ -1,10 +1,26 @@
 {readFileSync} = require 'fs'
 _              = require 'lodash'
 
-module.exports = (project) ->
+# Input
+# project :=
+#   .parts :=
+#     .name := string
+#     .length := number
+# Transformation := f()
+        
+
+# Output
+# List of parts :=
+#   f( 
+#     List of columns :=
+#       List of notes :=
+#         List of Strings :=
+#   )
+
+load = (project, transformation) ->
   {parts, root} = project
 
-  score = _.map parts, (p) ->
+  _.map parts, (p) ->
     { length, name } = p
 
     # Lets open the file and 
@@ -31,15 +47,9 @@ module.exports = (project) ->
       until p.length is length
         p.push pad
     
-    # Transform the part from
-    # an array of row containing
-    # columns, into an array of 
-    # columns containing rows
-    p = p.slice 0, length
-    p = _.reduce p, 
-      (sum, row) ->
-        _.map sum, (c, i) ->
-          c.concat row[i]
+
+    p = transformation p, length
+
 
     # Transform the notes in
     # each column, which are
@@ -54,8 +64,35 @@ module.exports = (project) ->
           note.slice 4, 5
         ]
 
+rotate2DArray = (part) -> 
+  # Transform the part from
+  # an array of row containing
+  # columns, into an array of 
+  # columns containing rows
+  part = part.slice 0, length
+  part = _.reduce part, 
+    (sum, row) ->
+      _.map sum, (c, i) ->
+        c.concat row[i]
+
+
+# Input
+# List of parts
+
+# Output
+# Part
+
+combine = (score) ->
   _.reduce score, (sum, p) ->
     _.map sum, (row, i) -> 
       row.concat p[i]
 
 
+getScore = (project) ->
+  combine (load project rotate2DArray)
+
+getScore.combine = combine
+getScore.load    = load
+
+
+module.exports = getScore
