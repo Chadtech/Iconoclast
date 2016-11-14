@@ -139,20 +139,23 @@ tones = [
 ]
 
 percussion = 
-  'hc': generator (getSamples 'hat_',        5, 0.35), 10
-  'ho': generator (getSamples 'hat-open_',   4, 0.35), 10
-  'sn': generator (getSamples 'snare_',      4, 0.6),  10
-  'sl': generator (getSamples 'snare-lite_', 4, 0.6),  10
-  'cl': generator (getSamples 'click_',      4, 0.5),  10 
+  'hc': generator (getSamples 'hat_',             5, 0.35), 10
+  'ho': generator (getSamples 'hat-open_',        4, 0.35), 10
+  'sn': generator (getSamples 'snare_',           4, 0.6),  10
+  'sl': generator (getSamples 'snare-lite_',      4, 0.6),  10
+  'zn': generator (getSamples 'snare-high-lite-', 4, 0.6),  10
+  'zl': generator (getSamples 'snare-high-',      4, 0.6),  10
+  'cl': generator (getSamples 'click_',           4, 0.5),  10 
+  'kc': generator (getSamples 'kick_',            4, 1),    10
   # 'bd': bassDrum(140, 14210)
   # 'lb': bassDrum(70,  24820)
-  '20': bassDrum 80 * tones[0], baseDuration / tones[0]
-  '21': bassDrum 80 * tones[1], baseDuration / tones[1]
-  '22': bassDrum 80 * tones[2], baseDuration / tones[2]
-  '23': bassDrum 80 * tones[3], baseDuration / tones[3]
-  '24': bassDrum 80 * tones[4], baseDuration / tones[4]
-  '30': bassDrum 160 * tones[0], baseDuration / tones[0]
-  '31': bassDrum 160 * tones[1], baseDuration / tones[1]
+  # '20': bassDrum 80 * tones[0], baseDuration / tones[0]
+  # '21': bassDrum 80 * tones[1], baseDuration / tones[1]
+  # '22': bassDrum 80 * tones[2], baseDuration / tones[2]
+  # '23': bassDrum 80 * tones[3], baseDuration / tones[3]
+  # '24': bassDrum 80 * tones[4], baseDuration / tones[4]
+  # '30': bassDrum 160 * tones[0], baseDuration / tones[0]
+  # '31': bassDrum 160 * tones[1], baseDuration / tones[1]
 
 
 

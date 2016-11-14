@@ -64,7 +64,7 @@ load = (project, transformation) ->
           note.slice 4, 5
         ]
 
-rotate2DArray = (part) -> 
+rotate2DArray = (part, length) -> 
   # Transform the part from
   # an array of row containing
   # columns, into an array of 
@@ -89,7 +89,7 @@ combine = (score) ->
 
 
 getScore = (project) ->
-  combine (load project rotate2DArray)
+  combine (load project, rotate2DArray)
 
 getScore.combine = combine
 getScore.load    = load

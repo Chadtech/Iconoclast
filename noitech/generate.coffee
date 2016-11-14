@@ -16,7 +16,22 @@ module.exports =
     
     output
 
+  realSaw : (voice) ->
+    voice = voice or {}
+    amplitude = voice.amplitude or 1
 
+    waveLength = 44100 / voice.tone
+
+    output = []
+
+    si = 0
+    while si < voice.sustain
+      # a = si % waveLength
+      a = (1 - (((si % waveLength) / waveLength) * 2))
+      output.push (a * amplitude)
+      si++
+
+    output
 
   saw: (voice) ->
     voice = voice or {}

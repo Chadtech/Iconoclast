@@ -38,35 +38,42 @@ q           = require './q'
 bellsG      = require './bells-G'
 bellsH      = require './bells-H'
 
+bellsR      = require './bells-R'
+
+saw         = require './saw-wave'
 
 project =
-  name:       'vol0p6'
+  name:       'vol0p7'
   root:       './score'
   parts: [
-    { name: 'part0.csv', length: 72 }
-    { name: 'part1.csv', length: 64 }
-    { name: 'part2.csv', length: 64 }
-    { name: 'part3.csv', length: 64 }
-    { name: 'part4.csv', length: 64 }
-    { name: 'part5.csv', length: 64 }
-    { name: 'part6.csv', length: 64 }
-    { name: 'part7.csv', length: 64 }
-    { name: 'part8.csv', length: 64 }
+    { name: 'part-h.csv',   length: 192 }
+    { name: 'part-i.csv',   length: 192 }
+    { name: 'part-j.csv',   length: 48 }
+    { name: 'part-jppp.csv',length: 48 }
+    { name: 'part-j.csv',   length: 48 }
+    { name: 'part-jp.csv',  length: 48 }
+    { name: 'part-ip.csv',  length: 192 }
+    { name: 'part-jpp.csv', length: 48 }
+    { name: 'part-k.csv',   length: 192 }
+    { name: 'part-l.csv',   length: 192 }
+    { name: 'part-m.csv',   length: 192 }
+    { name: 'part-mp.csv',  length: 192 }
+    { name: 'part-n.csv',   length: 192 }
+    { name: 'part-np.csv',  length: 192 }
+    { name: 'part-np.csv',  length: 192 }
+    { name: 'part-np.csv',  length: 192 }
+
   ]
   lines:      []
-  beatLength: 11100
-  # beatLength: 12500
+  beatLength: 2125
   voices:     [ 
-    bellsG(), 
-    bellsG(), 
-    bellsG(), 
-    bellsG(),
-    bellsH(),
-    bellsH(),
-    bellsH(),
-    bellsH()
-    p,
     p
+    p
+    q()
+    bellsR()
+    bellsR()
+    saw()
+    l()
   ]
 
 timings       = makeTimings project
