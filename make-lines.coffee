@@ -77,8 +77,10 @@ module.exports      = (project) ->
               n = eff.fadeIn n, endAt: 4000
 
             if fade > 4
-              n = eff.fadeOut n
-              n = eff.fadeIn n, endAt: ((fade - 4) * 2000)
+              _.times (fade - 3), ->
+                n = eff.fadeOut n
+              # n = eff.fadeOut n
+              # n = eff.fadeIn n, endAt: ((fade - 4) * 2000)
 
 
             n = eff.fadeIn n, endAt: ramp
