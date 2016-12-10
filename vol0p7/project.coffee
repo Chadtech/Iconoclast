@@ -15,8 +15,7 @@ project =
     { name: 'part-l.csv',        length: 192 }
     { name: 'part-m.csv',        length: 192 }
     { name: 'part-mp.csv',       length: 192 }
-    { name: 'part-mn.csv',       length: 96 }
-    { name: 'part-n.csv',       length: 192 }
+    { name: 'part-n.csv',        length: 192 }
     { name: 'part-np.csv',       length: 192 }
     { name: 'part-np.csv',       length: 192 }
     { name: 'part-np.csv',       length: 192 }

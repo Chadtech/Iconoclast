@@ -33,6 +33,28 @@ module.exports =
 
     output
 
+  pulse : (voice) ->
+    voice = voice or {}
+    amplitude = voice.amplitude or 1
+    tone = voice.tone / 44100
+
+    output = []
+
+    si = 0
+    while si < voice.sustain
+      sample = Math.sin (Math.PI * 2 * si * tone)
+
+      if sample < 0
+        sample *= 1 - (0.75 * ((Math.abs sample) ** 0.5))
+      # else
+
+      output.push (sample * amplitude)
+
+      si++
+
+    output
+
+
   saw: (voice) ->
     voice = voice or {}
     amplitude = voice.amplitude or 1

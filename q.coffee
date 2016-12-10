@@ -10,10 +10,10 @@ eff   = Nt.effect
 tonic = 20
 tones = [
   1       # 1/1
-  1.125   # 9/8
-  1.2     # 6/5
-  1.5     # 3/2
-  1.8     # 9/5
+  1.167   # 7/6
+  1.333   # 4/3
+  1.524   # 32/21
+  1.75    # 7/4
 ]
 
 inharmonicity = 1.01
@@ -22,12 +22,6 @@ d             = 44100 * 3
 module.exports = ->
   octaves = _.times 8, (octave) ->
     _.map tones, (tone, ti) ->
-
-      # just a bit of variance
-      # away from the act tone
-      r  = random() - 0.5
-      r /= 100
-      r++
 
       # The tendency for higher
       # frequencies to 'stretch'
@@ -41,7 +35,7 @@ module.exports = ->
       o  = tonic * (2 ** octave)
       o *= tone
 
-      o * h * r
+      o * h
 
   octaves = _.reduce octaves,
     (sum, octave, oi) ->
@@ -72,9 +66,15 @@ module.exports = ->
         harmonics = _.map harmonics, 
           (h, j) ->
 
+            # just a bit of variance
+            # away from the act tone
+            r  = random() - 0.5
+            r /= 100
+            r++
+
             o = gen.sine
               amplitude: h.a
-              tone:      h.freq
+              tone:      (h.freq * r)
               sustain:   h.dur
               phase:     h.phase
 

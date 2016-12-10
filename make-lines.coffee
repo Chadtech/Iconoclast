@@ -44,7 +44,8 @@ module.exports      = (project) ->
             volume = parseInt n[2], 16
             volume++
             volume = volume / 16
-            volume = factor: volume
+
+            volume = factor: (2 ** volume) - 1
 
             if isNaN volume.factor
               say 'volume isnt number'

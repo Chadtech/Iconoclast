@@ -37,43 +37,40 @@ q           = require './q'
 
 bellsG      = require './bells-G'
 bellsH      = require './bells-H'
+manyBellsH  = require './several-bells-H'
+manyBellsG  = require './several-bells-G'
 
 bellsR      = require './bells-R'
 
 saw         = require './saw-wave'
 
+naturalSaw  = require './natural-saw'
+complexVoice = require './complex-voice'
+complexVoiceLow = require './complex-voice-low'
+sine        = require './sine'
+
 project =
-  name:       'vol0p7'
+  name:       'alternation-piece-11'
   root:       './score'
   parts: [
-    { name: 'beginning-pad.csv', length: 16  }
-    { name: 'part-h.csv',        length: 192 }
-    { name: 'part-i.csv',        length: 192 }
-    { name: 'part-j.csv',        length: 48  }
-    { name: 'part-jppp.csv',     length: 48  }
-    { name: 'part-j.csv',        length: 48  }
-    { name: 'part-jp.csv',       length: 48  }
-    { name: 'part-ip.csv',       length: 192 }
-    { name: 'part-jpp.csv',      length: 48  }
-    { name: 'part-k.csv',        length: 192 }
-    { name: 'part-l.csv',        length: 192 }
-    { name: 'part-m.csv',        length: 192 }
-    { name: 'part-mp.csv',       length: 192 }
-    { name: 'part-mn.csv',       length: 96 }
-    { name: 'part-n.csv',       length: 192 }
-    { name: 'part-np.csv',       length: 192 }
-    { name: 'part-np.csv',       length: 192 }
-    { name: 'part-np.csv',       length: 192 }
+    { name: 'part-c.scr',   length: 64 }
+    { name: 'part-d.scr',   length: 64 }
+    { name: 'part-d.scr',   length: 64 }
+    { name: 'part-e.scr',   length: 36 }
+    { name: 'part-fa.scr',   length: 120 }
+
+
   ]
   lines:      []
-  beatLength: 2125
+  beatLength: 8000
   voices:     [ 
     p
     p
+    n()
     q()
-    bellsR()
-    bellsR()
-    saw()
+    q()
+    l()
+    l()
     l()
   ]
 

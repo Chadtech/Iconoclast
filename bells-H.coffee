@@ -5,15 +5,15 @@ eff   = Nt.effect
 
 {random, PI} = Math
 
-# Bells G
+# Bells H
 
 tonic = 20
 tones = [
-  1       # 1/1
-  1.143   # 8/7
-  1.313   # 21/16
-  1.524   # 32/21
-  1.75    # 7/4
+  1
+  1.125   # 9 / 8
+  1.3125  # 21 / 16
+  1.5     # 3 / 2
+  1.75    # 7 / 4
 ]
 
 inharmonicity = 1.01
@@ -56,7 +56,7 @@ module.exports = ->
       freq   = octaves[k]
       sum[k] = ->
 
-        a_ = 1 - ((parseInt k) / 40) * 0.8 
+        a_ = 1 - ((parseInt k) / 80) * 0.8 
 
         harmonics = [
           {f: 2, a: 0.5,         freq: freq,        dur: d * 0.6 ,  phase: 0}
@@ -73,7 +73,7 @@ module.exports = ->
         harmonics = _.map harmonics, 
           (h, j) ->
             o = gen.sine
-              amplitude: h.a * 2
+              amplitude: h.a
               tone:      h.freq
               sustain:   h.dur
               phase:     h.phase
