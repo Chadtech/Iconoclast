@@ -53,10 +53,10 @@ project =
   name:       'alternation-piece-11'
   root:       './score'
   parts: [
-    { name: 'part-c.scr',   length: 64 }
-    { name: 'part-d.scr',   length: 64 }
-    { name: 'part-d.scr',   length: 64 }
-    { name: 'part-e.scr',   length: 36 }
+    { name: 'part-c.scr',    length: 64 }
+    { name: 'part-d.scr',    length: 64 }
+    { name: 'part-ds.scr',   length: 64 }
+    { name: 'part-e.scr',    length: 36 }
     { name: 'part-fa.scr',   length: 120 }
 
 
